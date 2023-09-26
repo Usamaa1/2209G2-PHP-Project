@@ -1,4 +1,63 @@
 <?php require "header/navbar.php" ?>
+<?php require "connection/connection.php" ?>
+<?php
+
+
+	$fetch_user_query = "SELECT * FROM `register_user`";
+	$fetch_user_prepare = $connection->prepare($fetch_user_query);
+	$fetch_user_prepare->execute();
+	$fetch_user_data = $fetch_user_prepare->fetchAll(PDO::FETCH_ASSOC);
+
+	print_r($fetch_user_data);
+
+
+
+
+	if(isset($_POST['register'])){
+
+		$userName = $_POST['userName'];
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+
+		$isEmailValid = true;
+
+		
+	foreach($fetch_user_data as $data){
+		if($email === $data['user_email'])
+		{
+			echo "<script>alert('Email is already exist')</script>";
+		}
+		else
+		{
+			$isEmailValid = false;
+		}
+	}
+
+
+
+	if($isEmailValid){
+		$hash_password = password_hash($password,PASSWORD_BCRYPT);
+
+
+			$register_insert_query = "INSERT INTO `register_user`(`user_name`, `user_email`, `user_password`) 			VALUES (:username,:email,:password)"; 
+	
+			$register_insert_prepare = $connection->prepare($register_insert_query);
+	
+			$register_insert_prepare->bindParam(':username',$userName, PDO::PARAM_STR);
+			$register_insert_prepare->bindParam(':email',$email, PDO::PARAM_STR);
+			$register_insert_prepare->bindParam(':password',$hash_password, PDO::PARAM_STR);
+	
+			$register_insert_prepare->execute();
+	
+	}
+
+
+
+
+
+	}
+
+?>
 
 
     <section class="home-slider owl-carousel">
@@ -22,33 +81,33 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12 ftco-animate">
-			<form action="#" class="billing-form ftco-bg-dark p-3 p-md-5">
+			<form action="register.php" method="post" class="billing-form ftco-bg-dark p-3 p-md-5">
 				<h3 class="mb-4 billing-heading">Register</h3>
 	          	<div class="row align-items-end">
                  <div class="col-md-12">
                         <div class="form-group">
                             <label for="Username">Username</label>
-                          <input type="text" class="form-control" placeholder="Username">
+                          <input type="text" name="userName" class="form-control" placeholder="Username">
                         </div>
                  </div>
 	          	  <div class="col-md-12">
 	                <div class="form-group">
 	                	<label for="Email">Email</label>
-	                  <input type="text" class="form-control" placeholder="Email">
+	                  <input type="text" name="email" class="form-control" placeholder="Email">
 	                </div>
 	              </div>
                  
 	              <div class="col-md-12">
 	                <div class="form-group">
 	                	<label for="Password">Password</label>
-	                    <input type="password" class="form-control" placeholder="Password">
+	                    <input type="password" name="password" class="form-control" placeholder="Password">
 	                </div>
 
                 </div>
                 <div class="col-md-12">
                 	<div class="form-group mt-4">
 							<div class="radio">
-                                <button class="btn btn-primary py-3 px-4">Register</button>
+                                <input type='submit' name="register" value='Register' class="btn btn-primary py-3 px-4">
 						    </div>
 					</div>
                 </div>
