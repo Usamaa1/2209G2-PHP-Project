@@ -8,7 +8,7 @@
 	$fetch_user_prepare->execute();
 	$fetch_user_data = $fetch_user_prepare->fetchAll(PDO::FETCH_ASSOC);
 
-	print_r($fetch_user_data);
+	// print_r($fetch_user_data);
 
 
 
@@ -19,17 +19,18 @@
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 
-		$isEmailValid = true;
+		$isEmailValid = false;
 
 		
 	foreach($fetch_user_data as $data){
 		if($email === $data['user_email'])
 		{
 			echo "<script>alert('Email is already exist')</script>";
+			return;
 		}
 		else
 		{
-			$isEmailValid = false;
+			$isEmailValid = true;
 		}
 	}
 
@@ -39,7 +40,7 @@
 		$hash_password = password_hash($password,PASSWORD_BCRYPT);
 
 
-			$register_insert_query = "INSERT INTO `register_user`(`user_name`, `user_email`, `user_password`) 			VALUES (:username,:email,:password)"; 
+			$register_insert_query = "INSERT INTO `register_user`(`user_name`, `user_email`, `user_password`) VALUES (:username,:email,:password)"; 
 	
 			$register_insert_prepare = $connection->prepare($register_insert_query);
 	

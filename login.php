@@ -1,4 +1,50 @@
 <?php require "header/navbar.php" ?>
+<?php require "connection/connection.php" ?>
+
+<?php 
+
+
+
+
+
+$fetch_user_query = "SELECT * FROM `register_user`";
+$fetch_user_prepare = $connection->prepare($fetch_user_query);
+$fetch_user_prepare->execute();
+$fetch_user_data = $fetch_user_prepare->fetchAll(PDO::FETCH_ASSOC);
+
+// print_r($fetch_user_data);
+
+
+
+if(isset($_POST['login']))
+{
+
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+
+
+	foreach($fetch_user_data as $data){
+		if($email === $data['user_email'] && password_verify($password, $data['user_password']))
+		{
+			$_SESSION['userId'] = $data['user_id'];
+			$_SESSION['userName'] = $data['user_name'];
+			$_SESSION['userEmail'] = $data['user_email'];
+			header("location:index.php");
+		}
+		else
+		{
+			echo "<script>alert('Login unSuccessfull')</script>";
+			return;
+		}
+	}
+	
+}
+
+
+
+
+
+?>
 
 
     <section class="home-slider owl-carousel">
@@ -22,27 +68,27 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12 ftco-animate">
-			<form action="#" class="billing-form ftco-bg-dark p-3 p-md-5">
+			<form action="login.php" method="post" class="billing-form ftco-bg-dark p-3 p-md-5">
 				<h3 class="mb-4 billing-heading">Login</h3>
 	          	<div class="row align-items-end">
 	          		<div class="col-md-12">
 	                <div class="form-group">
 	                	<label for="Email">Email</label>
-	                  <input type="text" class="form-control" placeholder="Email">
+	                  <input type="text" name="email" class="form-control" placeholder="Email">
 	                </div>
 	              </div>
                  
 	              <div class="col-md-12">
 	                <div class="form-group">
 	                	<label for="Password">Password</label>
-	                    <input type="password" class="form-control" placeholder="Password">
+	                    <input type="password" name="password" class="form-control" placeholder="Password">
 	                </div>
 
                 </div>
                 <div class="col-md-12">
                 	<div class="form-group mt-4">
 							<div class="radio">
-                                <button class="btn btn-primary py-3 px-4">Login</button>
+                                <button type="submit" name="login" class="btn btn-primary py-3 px-4">Login</button>
 						    </div>
 					</div>
                 </div>
