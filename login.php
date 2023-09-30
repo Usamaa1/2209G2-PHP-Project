@@ -5,40 +5,57 @@
 
 
 
-
-
-$fetch_user_query = "SELECT * FROM `register_user`";
-$fetch_user_prepare = $connection->prepare($fetch_user_query);
-$fetch_user_prepare->execute();
-$fetch_user_data = $fetch_user_prepare->fetchAll(PDO::FETCH_ASSOC);
-
-// print_r($fetch_user_data);
-
-
-
-if(isset($_POST['login']))
+if(isset($_SESSION['userName']))
+{
+	header("location:index.php");
+}
+else
 {
 
-	$email = $_POST['email'];
-	$password = $_POST['password'];
-
-
-	foreach($fetch_user_data as $data){
-		if($email === $data['user_email'] && password_verify($password, $data['user_password']))
-		{
-			$_SESSION['userId'] = $data['user_id'];
-			$_SESSION['userName'] = $data['user_name'];
-			$_SESSION['userEmail'] = $data['user_email'];
-			header("location:index.php");
+	$fetch_user_query = "SELECT * FROM `register_user`";
+	$fetch_user_prepare = $connection->prepare($fetch_user_query);
+	$fetch_user_prepare->execute();
+	$fetch_user_data = $fetch_user_prepare->fetchAll(PDO::FETCH_ASSOC);
+	
+	// print_r($fetch_user_data);
+	
+	
+	
+	if(isset($_POST['login']))
+	{
+	
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+	
+	
+		$isLoginNotSuccessfull = false;
+	
+		foreach($fetch_user_data as $data){
+			if($email === $data['user_email'] && password_verify($password, $data['user_password']))
+			{
+				$_SESSION['userId'] = $data['user_id'];
+				$_SESSION['userName'] = $data['user_name'];
+				$_SESSION['userEmail'] = $data['user_email'];
+				header("location:index.php");
+			}
+			else
+			{
+				$isLoginNotSuccessfull = true;
+			}
 		}
-		else
-		{
+	
+		if($isLoginNotSuccessfull){
 			echo "<script>alert('Login unSuccessfull')</script>";
-			return;
 		}
+	
+	
+		
 	}
 	
 }
+
+
+
 
 
 

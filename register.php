@@ -3,6 +3,13 @@
 <?php
 
 
+if(isset($_SESSION['userName']))
+{
+	header("location:index.php");
+}
+else
+{
+
 	$fetch_user_query = "SELECT * FROM `register_user`";
 	$fetch_user_prepare = $connection->prepare($fetch_user_query);
 	$fetch_user_prepare->execute();
@@ -57,7 +64,7 @@
 
 
 	}
-
+}
 ?>
 
 
