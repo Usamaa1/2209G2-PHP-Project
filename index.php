@@ -14,26 +14,29 @@
 
 	$products_data = $products_prepare->fetchAll(PDO::FETCH_ASSOC);
 	
-	print_r($products_data);
+	// print_r($products_data);
 	
 	// VIEW PRODUCTS END
 
 
+	// $userId = $_SESSION['userId'];
 
 
+	$isLogin = false;
+
+	if(isset($_SESSION['userId']))
+	{
+		$isLogin = true;
+	}
 
 
-if (isset($_SESSION['userId'])) {
-
-
-
-
-
-	// 	BOOK A TABLE START
-
-
-	if (isset($_POST['submit'])) {
-
+	// if (empty($_SESSION['userId'])) 
+	// {
+		
+		// 	BOOK A TABLE START
+		
+		if (isset($_POST['submit'])) 
+		{
 
 		$firstName = $_POST['firstName'];
 		$lastName = $_POST['lastName'];
@@ -42,36 +45,58 @@ if (isset($_SESSION['userId'])) {
 		$phone = $_POST['phone'];
 		$message = $_POST['message'];
 		$avilibility = 'Yes';
-		$userId = $_SESSION['userId'];
+		@$userId = $_SESSION['userId'];
+
+
+		if(empty($firstName) || empty($lastName) || empty($date) || empty($time) || empty($phone) || empty($message)){
+			echo "<script>alert('Kindly fill all the feilds')</script>";
+		}
+		else
+		{
+
+
+			if(isset($userId)){
+				$book_query = "INSERT INTO `booking`(`first_name`, `last_name`, `date`, `time`, `phone`, `message`, `availibility`, `user_id`) VALUES (:firstName, :lastName, :date, :time, :phone, :message, :avilibility, :userId)";
+
+				$book_prepare = $connection->prepare($book_query);
+				$book_prepare->bindParam(':firstName', $firstName);
+				$book_prepare->bindParam(':lastName', $lastName);
+				$book_prepare->bindParam(':date', $date);
+				$book_prepare->bindParam(':time', $time);
+				$book_prepare->bindParam(':phone', $phone);
+				$book_prepare->bindParam(':message', $message);
+				$book_prepare->bindParam(':avilibility', $avilibility);
+				$book_prepare->bindParam(':userId', $userId);
+				$book_prepare->execute();
+			}
+			else
+			{
+			echo "<script>alert('Kindly login to book a table')</script>";
+
+			}
 
 
 
-		$book_query = "INSERT INTO `booking`(`first_name`, `last_name`, `date`, `time`, `phone`, `message`, `availibility`, `user_id`) VALUES (:firstName, :lastName, :date, :time, :phone, :message, :avilibility, :userId)";
+	
+	
 
-		$book_prepare = $connection->prepare($book_query);
-		$book_prepare->bindParam(':firstName', $firstName);
-		$book_prepare->bindParam(':lastName', $lastName);
-		$book_prepare->bindParam(':date', $date);
-		$book_prepare->bindParam(':time', $time);
-		$book_prepare->bindParam(':phone', $phone);
-		$book_prepare->bindParam(':message', $message);
-		$book_prepare->bindParam(':avilibility', $avilibility);
-		$book_prepare->bindParam(':userId', $userId);
-		$book_prepare->execute();
+
+
+		}
 
 
 
 
+
+	
 	}
+
 
 	// 	BOOK A TABLE END
 
 
 
-}else{
-	echo "<script>alert('Kindly login to book a table')</script>";
-
-}
+// }
 
 
 
