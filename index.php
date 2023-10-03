@@ -19,19 +19,10 @@
 	// VIEW PRODUCTS END
 
 
-	// $userId = $_SESSION['userId'];
 
 
-	$isLogin = false;
-
-	if(isset($_SESSION['userId']))
-	{
-		$isLogin = true;
-	}
 
 
-	// if (empty($_SESSION['userId'])) 
-	// {
 		
 		// 	BOOK A TABLE START
 		
@@ -54,7 +45,6 @@
 		else
 		{
 
-
 			if(isset($userId)){
 				$book_query = "INSERT INTO `booking`(`first_name`, `last_name`, `date`, `time`, `phone`, `message`, `availibility`, `user_id`) VALUES (:firstName, :lastName, :date, :time, :phone, :message, :avilibility, :userId)";
 
@@ -75,13 +65,6 @@
 
 			}
 
-
-
-	
-	
-
-
-
 		}
 
 
@@ -95,8 +78,6 @@
 	// 	BOOK A TABLE END
 
 
-
-// }
 
 
 
@@ -444,7 +425,7 @@
 						<h3><a href="#"><?php echo $data['prod_name'] ?></a></h3>
 						<p><?php echo $data['prod_description'] ?></p>
 						<p class="price"><span>$<?php echo $data['prod_price'] ?></span></p>
-						<p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
+						<p><a href="product-single.php?prodId=<?php echo $data['prod_id'] ?>" class="btn btn-primary btn-outline-primary">View</a></p>
 					</div>
 				</div>
 			</div>
