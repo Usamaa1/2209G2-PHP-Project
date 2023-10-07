@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2023 at 05:26 PM
+-- Generation Time: Oct 07, 2023 at 04:45 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -53,6 +53,24 @@ INSERT INTO `booking` (`booking_id`, `first_name`, `last_name`, `date`, `time`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `cart_id` int(11) NOT NULL,
+  `prod_name` varchar(200) NOT NULL,
+  `prod_price` float NOT NULL,
+  `prod_description` varchar(200) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `size` varchar(200) NOT NULL,
+  `prod_image` varchar(200) NOT NULL,
+  `prod_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -61,24 +79,25 @@ CREATE TABLE `products` (
   `prod_name` varchar(200) NOT NULL,
   `prod_description` text NOT NULL,
   `prod_price` float NOT NULL,
-  `prod_image` varchar(200) NOT NULL
+  `prod_image` varchar(200) NOT NULL,
+  `prod_type` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`prod_id`, `prod_name`, `prod_description`, `prod_price`, `prod_image`) VALUES
-(1, 'Velvet Mocha', 'A smooth blend of rich espresso, steamed milk, and velvety chocolate syrup, topped with whipped cream and a sprinkle of cocoa powder.', 4.5, 'menu-1.jpg'),
-(2, 'Caramel Dream Latte', 'A heavenly combination of espresso, frothy milk, and sweet caramel syrup, finished with a drizzle of caramel and a pinch of sea salt for a delightful balance of flavors.', 4.75, 'menu-2.jpg'),
-(3, 'Vanilla Bean Bliss', 'A comforting mix of espresso, creamy milk, and aromatic vanilla bean syrup, garnished with a dusting of cinnamon. Perfect for vanilla lovers seeking a subtle and soothing coffee experience.', 4.25, 'menu-3.jpg'),
-(4, 'Hazelnut Heaven', 'Indulge in the nutty goodness of hazelnut-infused espresso, paired with steamed milk and a touch of hazelnut syrup. Topped with whipped cream and crushed hazelnuts for a delightful crunch.', 4.6, 'menu-4.jpg'),
-(5, 'Iced Caramel Macchiato', 'A refreshing iced coffee treat featuring espresso shots poured over chilled milk and vanilla syrup. Finished with a drizzle of caramel for sweetness and a beautiful caramel macchiato art.', 5, 'menu-1.jpg'),
-(6, 'Espresso Con Panna', 'For those who appreciate the boldness of espresso, this drink features a shot of rich, dark espresso crowned with a dollop of fresh whipped cream. A simple yet indulgent choice.', 3.75, 'menu-2.jpg'),
-(7, 'Coconut Delight', 'Experience the tropical flavors with this coconut-infused coffee delight. Freshly brewed coffee blended with coconut milk and coconut syrup, garnished with toasted coconut flakes for a delightful crunch.', 4.85, 'menu-3.jpg'),
-(8, 'Cinnamon Spice Latte', 'Warm up your senses with this aromatic blend of espresso, steamed milk, and a hint of cinnamon spice syrup. Topped with a sprinkle of cinnamon for a cozy and comforting coffee experience.', 4.4, 'menu-4.jpg'),
-(9, 'Double Chocolate Espresso', 'A chocolate lover’s dream! Double shots of espresso combined with velvety chocolate sauce and steamed milk, finished with whipped cream and chocolate shavings for the ultimate chocolate indulgence.', 5.25, 'menu-1.jpg'),
-(10, 'Maple Pecan Delight', 'Embrace the flavors of fall with this delightful blend of espresso, warm milk, and sweet maple pecan syrup. Garnished with crushed pecans and a drizzle of maple syrup, creating a cozy and comforting coffee sensation.', 4.9, 'menu-2.jpg');
+INSERT INTO `products` (`prod_id`, `prod_name`, `prod_description`, `prod_price`, `prod_image`, `prod_type`) VALUES
+(1, 'Velvet Mocha', 'A smooth blend of rich espresso, steamed milk, and velvety chocolate syrup, topped with whipped cream and a sprinkle of cocoa powder.', 4.5, 'menu-1.jpg', ' Espresso'),
+(2, 'Caramel Dream Latte', 'A heavenly combination of espresso, frothy milk, and sweet caramel syrup, finished with a drizzle of caramel and a pinch of sea salt for a delightful balance of flavors.', 4.75, 'menu-2.jpg', 'Cappuccino'),
+(3, 'Vanilla Bean Bliss', 'A comforting mix of espresso, creamy milk, and aromatic vanilla bean syrup, garnished with a dusting of cinnamon. Perfect for vanilla lovers seeking a subtle and soothing coffee experience.', 4.25, 'menu-3.jpg', ' Espresso'),
+(4, 'Hazelnut Heaven', 'Indulge in the nutty goodness of hazelnut-infused espresso, paired with steamed milk and a touch of hazelnut syrup. Topped with whipped cream and crushed hazelnuts for a delightful crunch.', 4.6, 'menu-4.jpg', 'Cappuccino'),
+(5, 'Iced Caramel Macchiato', 'A refreshing iced coffee treat featuring espresso shots poured over chilled milk and vanilla syrup. Finished with a drizzle of caramel for sweetness and a beautiful caramel macchiato art.', 5, 'menu-1.jpg', ' Espresso'),
+(6, 'Espresso Con Panna', 'For those who appreciate the boldness of espresso, this drink features a shot of rich, dark espresso crowned with a dollop of fresh whipped cream. A simple yet indulgent choice.', 3.75, 'menu-2.jpg', 'Coffea arabica'),
+(7, 'Coconut Delight', 'Experience the tropical flavors with this coconut-infused coffee delight. Freshly brewed coffee blended with coconut milk and coconut syrup, garnished with toasted coconut flakes for a delightful crunch.', 4.85, 'menu-3.jpg', 'Coffea arabica'),
+(8, 'Cinnamon Spice Latte', 'Warm up your senses with this aromatic blend of espresso, steamed milk, and a hint of cinnamon spice syrup. Topped with a sprinkle of cinnamon for a cozy and comforting coffee experience.', 4.4, 'menu-4.jpg', 'Cappuccino'),
+(9, 'Double Chocolate Espresso', 'A chocolate lover’s dream! Double shots of espresso combined with velvety chocolate sauce and steamed milk, finished with whipped cream and chocolate shavings for the ultimate chocolate indulgence.', 5.25, 'menu-1.jpg', 'Coffea arabica'),
+(10, 'Maple Pecan Delight', 'Embrace the flavors of fall with this delightful blend of espresso, warm milk, and sweet maple pecan syrup. Garnished with crushed pecans and a drizzle of maple syrup, creating a cozy and comforting coffee sensation.', 4.9, 'menu-2.jpg', 'Coffea arabica');
 
 -- --------------------------------------------------------
 
@@ -117,6 +136,14 @@ ALTER TABLE `booking`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`cart_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `prod_id` (`prod_id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -139,6 +166,12 @@ ALTER TABLE `booking`
   MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -159,6 +192,13 @@ ALTER TABLE `register_user`
 --
 ALTER TABLE `booking`
   ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `register_user` (`user_id`);
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `register_user` (`user_id`),
+  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`prod_id`) REFERENCES `products` (`prod_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
