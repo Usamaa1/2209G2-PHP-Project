@@ -14,7 +14,7 @@
 
 	$single_product = $single_product_prepare->fetch(PDO::FETCH_ASSOC);
 
-	print_r($single_product);
+	// print_r($single_product);
 
 
 
@@ -29,7 +29,7 @@
 
 	$related_product = $related_product_prepare->fetchAll(PDO::FETCH_ASSOC);
 
-	print_r($related_product);
+	// print_r($related_product);
 
 
 
@@ -74,6 +74,25 @@
 	}
 
 	// ADD TO CART END
+
+
+	// CART DATA START
+
+	
+	$cart_fetch_query = "SELECT * FROM `cart` where prod_id = :prodId";
+	$cart_fetch_prepare = $connection->prepare($cart_fetch_query);
+	$cart_fetch_prepare->bindParam(':prodId',$prodId);
+	$cart_fetch_prepare->execute();
+	
+	$cart_data = $cart_fetch_prepare->fetch(PDO::FETCH_ASSOC);
+	
+	
+	// print_r(is_array($cart_data['prod_id']));
+	
+
+
+
+	// CART DATA END
 
 
 
@@ -144,12 +163,31 @@
 	          	</div>
           	</div>
 
+			<?php 
 			
+			if(is_array($cart_data)){
+
+		
+			if($cart_data['prod_id'] === $single_product['prod_id']){ ?>	
+
+				<p>Already added in the Cart</p>
+
+			<?php 
+			}
+			}
+			else
+			{			
+			?>
 
 				<input type="hidden" value="<?php echo $single_product['prod_price'] ?>" name="inputPrice" id="inputPrice">
 				<p><input value="Add to Cart" type="submit" name="cart_button" class="btn btn-primary py-3 px-5"></p>
 			</form>
 
+
+			
+			<?php 
+			}
+			 ?>
 
 
     			</div>
